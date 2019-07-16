@@ -1,6 +1,7 @@
 import dialogflow
 from pydub import AudioSegment
 from pydub.playback import play
+import os
 
 import numpy
 from scipy.io.wavfile import read, write
@@ -37,11 +38,12 @@ def change_voice(file_name, file_name_output=None, shift=8):
     sample_rate = a[0]
 
     offset_sec = 0.01
-    offset_step = int(offset_sec * sample_rate)
+    offset_step = int(offset_sec * sample_rat
     input_sound = numpy.array(sound,dtype=float)
     shifted = numpy.sum([shift_sound(input_sound, i*offset_step) for i in range(shift)], axis=0)
     write_wav(file_name_output, shifted, sample_rate, norm=True)
 
 def play_wav(file_name):
-    song = AudioSegment.from_wav(file_name)
-    play(song)
+    os.system("aplay {}".format(file_name))
+    ''' song = AudioSegment.from_wav(file_name)
+    play(song) '''
