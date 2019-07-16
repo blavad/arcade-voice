@@ -51,6 +51,9 @@ def arecord(fmt, filetype='raw', filename=None, device='default'):
 
     if filename is not None:
         cmd.append(filename)
+        cmd.append('trim')
+        cmd.append('0')
+        cmd.append('5')
 
     return cmd
 

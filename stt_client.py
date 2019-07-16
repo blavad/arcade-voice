@@ -63,6 +63,7 @@ class CloudSpeechClient:
             elif platform == "darwin":
                 chunks = recorder.record(AUDIO_FORMAT,
                                          chunk_duration_sec=0.1,
+                                         filename='test.wav',
                                          on_start=self.start_listening,
                                          on_stop=self.stop_listening)#reSpeakerRecord()
 
