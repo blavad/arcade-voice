@@ -44,6 +44,8 @@ class ArcadeepVoice(Thread):
             file_tmp = self.client_speaker.tts_wave(message, language=language, gender=gender)
             change_voice(file_tmp, out_wav, shift=shift)
             play_wav(out_wav)
+            
+            logging.info("Say : {}".format(message))
 
     def response(self, request):
         response, infos = detect_intent_texts("arcadeep","unique",[request], self.language)
@@ -66,6 +68,7 @@ class ArcadeepVoice(Thread):
         while (text is None):
             text = self.client.recognize(language_code=self.language,
                                      hint_phrases=None)
+            logging.info("Heard : {}".format(text))
         return text
 
 ''' 
