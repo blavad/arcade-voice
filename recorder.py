@@ -120,6 +120,7 @@ class Recorder:
 
         for i in range(0, int(RESPEAKER_RATE / CHUNK * RECORD_SECONDS)):
             data = stream.read(CHUNK)
+            yield data
             frames.append(data)
 
         print("* done recording")
@@ -133,7 +134,6 @@ class Recorder:
         wf.setframerate(RESPEAKER_RATE)
         wf.writeframes(b''.join(frames))
         wf.close()
-        return b''.join(frames)
 
     def done(self):
         self._done.set()
