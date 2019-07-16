@@ -100,7 +100,7 @@ class Recorder:
         RESPEAKER_CHANNELS = 1 
         RESPEAKER_WIDTH = 2
         # run getDeviceInfo.py to get index
-        RESPEAKER_INDEX = 1  
+        RESPEAKER_INDEX = 6 
         CHUNK = 1024
         RECORD_SECONDS = record_seconds
         WAVE_OUTPUT_FILENAME = filename
