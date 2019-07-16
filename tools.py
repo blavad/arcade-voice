@@ -1,6 +1,5 @@
 import dialogflow
-from pydub import AudioSegment
-from pydub.playback import play
+import pyaudio
 from sys import platform
 import os
 
@@ -51,6 +50,7 @@ def play_wav(file_name):
         os.system("afplay {}".format(file_name))
     else:
         raise ValueError('Plateforme inconnue')
+
 
 
     
