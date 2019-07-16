@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Arcade Voice -- test speech </title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <link rel="stylesheet" type="text/css" href="http://192.168.86.33:5000/../static/style.css" media="all" />
+</head>
+
+<body>
+
+    <header>
+        <h1> Arcadeep Voice </h1>
+    </header>
+
+    <div class="main-content" style="padding-bottom:0%;margin-top:1%;">
+        <form action="http://192.168.86.33:5000/testSpeech" method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend> Test Speech </legend>
+                <label for="speech"> Speech : </label>
+                <input placeholder="Speech" id="speech" name="speech" type="text" size="30" required />
+                </br>
+                <label for="gender"> Gender : </label>
+                <select name="gender" id="gender ">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                </br>
+                <label for="language"> Language : </label>
+                <select name="language" id="language ">
+                    <option value="fr-FR">fr-FR</option>
+                    <option value="fr-CA">fr-CA</option>
+                    <option value="en-GB">en-GB</option>
+                    <option value="en-US">en-US</option>
+                    <option value="en-AU">en-AU</option>
+                    <option value="de-DE">de-DE</option>
+                    <option value="it-IT">it-IT</option>
+                    <option value="ja-JP">ja-JP</option>
+                    <option value="ru-RU">ru-RU</option>
+                </select>
+                </br>
+                <label for='shift'> Shift </label>
+                <input type="number" name="shift" step="1" value="8" min="0" max="32">
+                </br>
+                <br>
+                <input class="button" type="submit" value="Tester" />
+            </fieldset>
+        </form>
+        {% for value in log_tests %}
+        <h3 class='test'> Résultat test : {{ value }} </h3>
+        {% endfor %}
+        <br>
+        <br>
+
+        <form action="http://192.168.86.33:5000/testReponse" method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend> Test Dialog </legend>
+                <label for="speech_r"> Player Speech : </label>
+                <input placeholder="Speech" name="speech_r" type="text" size="30" required />
+                </br>
+                </br>
+                <input class="button" type="submit" value="Tester" />
+            </fieldset>
+        </form>
+        {% for key, value in responses.items() %}
+        <h3 class='test'> Q : {{ key }} / R: {{value}} </h3>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

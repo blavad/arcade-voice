@@ -1,0 +1,44 @@
+:root {
+    --bg-color: rgb(167, 226, 211);
+    --text-color: rgb(41, 122, 118);
+    --text-button-color: rgb(219, 172, 18);
+    --height-header: 50px;
+}
+
+* {
+    font-family: "monospace";
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.main-content {
+    padding-top: calc(2*var(--height-header));
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+legend {
+    font-weight: bold
+}
+
+header {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: var(--height-header);
+    top: 0;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.button {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
