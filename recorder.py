@@ -7,8 +7,9 @@ import pyaudio
 
 from collections import namedtuple
 from sys import platform
-    
+
 SUPPORTED_FILETYPES = ('wav', 'raw', 'voc', 'au')
+
 
 class AudioFormat(namedtuple('AudioFormat',
                              ['sample_rate_hz', 'num_channels', 'bytes_per_sample'])):
@@ -16,14 +17,18 @@ class AudioFormat(namedtuple('AudioFormat',
     def bytes_per_second(self):
         return self.sample_rate_hz * self.num_channels * self.bytes_per_sample
 
-AudioFormat.CD = AudioFormat(sample_rate_hz=44100, num_channels=2, bytes_per_sample=2)
+
+AudioFormat.CD = AudioFormat(
+    sample_rate_hz=44100, num_channels=2, bytes_per_sample=2)
+
 
 def arecord(fmt, filetype='raw', filename=None, device='default'):
     if fmt is None:
         raise ValueError('Format must be specified for recording.')
 
     if filetype not in SUPPORTED_FILETYPES:
-        raise ValueError('File type must be %s.' % ', '.join(SUPPORTED_FILETYPES))
+        raise ValueError('File type must be %s.' %
+                         ', '.join(SUPPORTED_FILETYPES))
 
     if platform == "linux" or platform == "linux2":
         cmd = ['arecord', '-q',
@@ -33,8 +38,14 @@ def arecord(fmt, filetype='raw', filename=None, device='default'):
                '-f', 's%d' % (8 * fmt.bytes_per_sample),
                '-r', str(fmt.sample_rate_hz)]
     elif platform == "darwin":
-        cmd = ['ffmpeg', '-d']
-        
+        cmd = ['sox',
+               '--no-show-progress',
+               '--default-device',
+               '--encoding', 'signed-integer',
+               '--bits', str(8 * fmt.bytes_per_sample),
+               '--type', 'raw',
+               '--rate', str(fmt.sample_rate_hz)]
+
     else:
         raise ValueError('Plateforme inconnue')
 
@@ -48,6 +59,7 @@ def wave_set_format(wav_file, fmt):
     wav_file.setnchannels(fmt.num_channels)
     wav_file.setsampwidth(fmt.bytes_per_sample)
     wav_file.setframerate(fmt.sample_rate_hz)
+
 
 class Recorder:
 
@@ -94,13 +106,12 @@ class Recorder:
                 on_stop()
             if wav_file:
                 wav_file.close()
-                
-    def reSpeakerRecord(self, record_seconds=5 , filename="output.wav"):
+
+    def reSpeakerRecord(self, record_seconds=5, filename="output.wav"):
         RESPEAKER_RATE = 16000
-        RESPEAKER_CHANNELS = 1 
+        RESPEAKER_CHANNELS = 1
         RESPEAKER_WIDTH = 2
-        # run getDeviceInfo.py to get index
-        RESPEAKER_INDEX = 6 
+        RESPEAKER_INDEX = 6
         CHUNK = 1024
         RECORD_SECONDS = record_seconds
         WAVE_OUTPUT_FILENAME = filename
@@ -108,11 +119,11 @@ class Recorder:
         p = pyaudio.PyAudio()
 
         stream = p.open(
-                    rate=RESPEAKER_RATE,
-                    format=p.get_format_from_width(RESPEAKER_WIDTH),
-                    channels=RESPEAKER_CHANNELS,
-                    input=True,
-                    input_device_index=RESPEAKER_INDEX,)
+            rate=RESPEAKER_RATE,
+            format=p.get_format_from_width(RESPEAKER_WIDTH),
+            channels=RESPEAKER_CHANNELS,
+            input=True,
+            input_device_index=RESPEAKER_INDEX,)
 
         print("* recording")
 
@@ -120,7 +131,6 @@ class Recorder:
 
         for i in range(0, int(RESPEAKER_RATE / CHUNK * RECORD_SECONDS)):
             data = stream.read(CHUNK)
-            yield data
             frames.append(data)
 
         print("* done recording")
@@ -130,7 +140,8 @@ class Recorder:
         p.terminate()
         wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
         wf.setnchannels(RESPEAKER_CHANNELS)
-        wf.setsampwidth(p.get_sample_size(p.get_format_from_width(RESPEAKER_WIDTH)))
+        wf.setsampwidth(p.get_sample_size(
+            p.get_format_from_width(RESPEAKER_WIDTH)))
         wf.setframerate(RESPEAKER_RATE)
         wf.writeframes(b''.join(frames))
         wf.close()

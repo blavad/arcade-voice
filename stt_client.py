@@ -61,7 +61,10 @@ class CloudSpeechClient:
                                          on_start=self.start_listening,
                                          on_stop=self.stop_listening)
             elif platform == "darwin":
-                chunks = recorder.reSpeakerRecord()
+                chunks = recorder.record(AUDIO_FORMAT,
+                                         chunk_duration_sec=0.1,
+                                         on_start=self.start_listening,
+                                         on_stop=self.stop_listening)#reSpeakerRecord()
 
             requests = (speech.types.StreamingRecognizeRequest(
                 audio_content=data) for data in chunks)
