@@ -16,7 +16,7 @@ class VoiceApp(Flask):
         
         @self.route('/startDialog')
         def startDialog():        
-            self.arcadeep.say('Bonjour, je suis Arcadeep, que puis-je faire pour vous ?')
+            self.arcadeep.say('')
             self.arcadeep.start()
             return render_template('testSpeech.html', log_tests=self.tests_sample, responses=self.qr_sample)
 

@@ -30,7 +30,7 @@ class ArcadeepVoice(Thread):
     def run(self):
         self.is_running = True
         while self.is_running:
-            logging.info("#> Interaction with Arcadeep is running. ", self.is_running)
+            logging.info("#> Interaction with Arcadeep is running. ".format(self.is_running))
             request = self.listen()
             self.say(self.response(request))
             self.run_action()
