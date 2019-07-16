@@ -43,7 +43,7 @@ def arecord(fmt, filetype='raw', filename=None, device='default'):
                '--default-device',
                '--encoding', 'signed-integer',
                '--bits', str(8 * fmt.bytes_per_sample),
-               '--type', 'raw',
+               '--type', filetype,
                '--rate', str(fmt.sample_rate_hz)]
 
     else:
