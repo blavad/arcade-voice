@@ -1,4 +1,4 @@
-from aiy import board
+''' from aiy import board
 import threading
 import time
 
@@ -24,4 +24,4 @@ def wait_to_be_activated(board):
     board.led.state = Led.ON
     board.button.wait_for_press()
     board.button.wait_for_release()
-    board.led.state = Led.OFF
+    board.led.state = Led.OFF '''

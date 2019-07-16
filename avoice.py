@@ -2,12 +2,10 @@ import logging
 from threading import Thread
 import requests
 
-from aiy.board import Board
-from aiy.cloudspeech import CloudSpeechClient
-from aiy.voice.audio import play_wav
+from stt_client import CloudSpeechClient
+# from aiy.voice.audio import play_wav
 
-from tools import detect_intent_texts, change_voice
-import aiy_tools
+from tools import detect_intent_texts, change_voice, play_wav
 from tts_client import TextToSpeechClient
 
 import params
@@ -30,9 +28,9 @@ class ArcadeepVoice(Thread):
         self.mode = None
     
     def run(self):
-        logging.info("#> Interaction with Arcadeep is running.")
         self.is_running = True
         while self.is_running:
+            logging.info("#> Interaction with Arcadeep is running. ", self.is_running)
             request = self.listen()
             self.say(self.response(request))
             self.run_action()
@@ -70,7 +68,7 @@ class ArcadeepVoice(Thread):
                                      hint_phrases=None)
         return text
 
-
+''' 
 class ArcadeepVoiceButton(ArcadeepVoice):
     
     def __init__(self, board, language='fr-FR', gender='Male'):
@@ -83,4 +81,4 @@ class ArcadeepVoiceButton(ArcadeepVoice):
             audio = fd.read()
             text = self.client.recognize_bytes(audio, language_code=self.language,
                                      hint_phrases=None)
-            return text
+            return text '''

@@ -1,7 +1,7 @@
 import logging
 from flask import Flask
 
-from avoice import ArcadeepVoice, ArcadeepVoiceButton
+from avoice import ArcadeepVoice
 from app import VoiceApp
 
 import aiy_tools

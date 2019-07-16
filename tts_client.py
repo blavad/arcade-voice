@@ -9,7 +9,7 @@ from tools import change_voice
 class TextToSpeechClient(object):
     def __init__(self, service_accout_file=None, language='en-US', gender="Male"):
         if service_accout_file is None:
-            service_accout_file = os.path.expanduser('~/cloud_speech.json')
+            service_accout_file = os.path.expanduser('./credentials/Arcadeep.json')
 
         credentials = service_account.Credentials.from_service_account_file(service_accout_file)
         self._client = texttospeech.TextToSpeechClient(credentials=credentials)        

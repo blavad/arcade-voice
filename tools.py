@@ -1,9 +1,10 @@
-import os
 import dialogflow
-import json
+from pydub import AudioSegment
+from pydub.playback import play
 
 import numpy
 from scipy.io.wavfile import read, write
+
 from librosa_tools import normalize, write_wav
 
 import logging
@@ -41,3 +42,6 @@ def change_voice(file_name, file_name_output=None, shift=8):
     shifted = numpy.sum([shift_sound(input_sound, i*offset_step) for i in range(shift)], axis=0)
     write_wav(file_name_output, shifted, sample_rate, norm=True)
 
+def play_wav(file_name):
+    song = AudioSegment.from_wav(file_name)
+    play(song)
