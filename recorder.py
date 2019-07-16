@@ -5,7 +5,8 @@ import itertools
 import wave
 
 from collections import namedtuple
-
+from sys import platform
+    
 SUPPORTED_FILETYPES = ('wav', 'raw', 'voc', 'au')
 
 class AudioFormat(namedtuple('AudioFormat',
@@ -23,12 +24,17 @@ def arecord(fmt, filetype='raw', filename=None, device='default'):
     if filetype not in SUPPORTED_FILETYPES:
         raise ValueError('File type must be %s.' % ', '.join(SUPPORTED_FILETYPES))
 
-    cmd = ['arecord', '-q',
-           '-D', device,
-           '-t', filetype,
-           '-c', str(fmt.num_channels),
-           '-f', 's%d' % (8 * fmt.bytes_per_sample),
-           '-r', str(fmt.sample_rate_hz)]
+    if platform == "linux" or platform == "linux2":
+        cmd = ['arecord', '-q',
+               '-D', device,
+               '-t', filetype,
+               '-c', str(fmt.num_channels),
+               '-f', 's%d' % (8 * fmt.bytes_per_sample),
+               '-r', str(fmt.sample_rate_hz)]
+    elif platform == "darwin":
+        cmd = ['sox', '-d']
+    else:
+        raise ValueError('Plateforme inconnue')
 
     if filename is not None:
         cmd.append(filename)
