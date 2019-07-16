@@ -82,7 +82,7 @@ class Recorder:
                on_start=None, on_stop=None, filename=None):
 
         chunk_size = int(chunk_duration_sec * fmt.bytes_per_second)
-        cmd = arecord(fmt=fmt, device=device)
+        cmd = arecord(fmt=fmt, device=device, filename=filename)
 
         wav_file = None
         if filename:
