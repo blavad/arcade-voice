@@ -39,7 +39,6 @@ def arecord(fmt, filetype='raw', filename=None, device='default'):
                '-r', str(fmt.sample_rate_hz)]
     elif platform == "darwin":
         cmd = ['sox',
-               '-v', '0.96',
                '--no-show-progress',
                '--default-device',
                '--encoding', 'signed-integer',
