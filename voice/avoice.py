@@ -1,22 +1,20 @@
 import logging
 from threading import Thread
 import requests
-
-from stt_client import CloudSpeechClient
-# from aiy.voice.audio import play_wav
-
-from tools import detect_intent_texts, change_voice, play_wav
-from tts_client import TextToSpeechClient
-
-import params
 import wave
+
+from .stt_client import CloudSpeechClient
+from .tts_client import TextToSpeechClient
+from .tools.vtools import detect_intent_texts, change_voice, play_wav
+import params
+
 
 class ArcadeepVoice(Thread):
 
-    def __init__(self, language='fr-FR', gender='Male'):
+    def __init__(self, language='fr-FR', gender='Male', service_accout_file=None):
         Thread.__init__(self)
-        self.client = CloudSpeechClient()
-        self.client_speaker = TextToSpeechClient(language=language,gender=gender)
+        self.client = CloudSpeechClient(service_accout_file=service_accout_file)
+        self.client_speaker = TextToSpeechClient(language=language,gender=gender, service_accout_file=service_accout_file)
         
         self.last_sentence_heard = None
         self.is_running = False
@@ -39,13 +37,13 @@ class ArcadeepVoice(Thread):
         self.is_running = False
         
     def say(self, message, language=None, gender=None, shift=8):
-        out_wav = 'assets/out.wav'        
+        out_wav = '/tmp/out.wav'        
         if message is not None:
             file_tmp = self.client_speaker.tts_wave(message, language=language, gender=gender)
             change_voice(file_tmp, out_wav, shift=shift)
             play_wav(out_wav)
             
-            logging.info("Say : {}".format(message))
+            print("Say : {}".format(message))
 
     def response(self, request):
         response, infos = detect_intent_texts("arcadeep","unique",[request], self.language)
@@ -66,9 +64,11 @@ class ArcadeepVoice(Thread):
     def listen(self):
         text = None
         while (text is None):
+            print("Start Record")
             text = self.client.recognize(language_code=self.language,
                                      hint_phrases=None)
-            logging.info("Heard : {}".format(text))
+            print("Stop Record")
+            print("Heard : {}".format(text))
         return text
 
 ''' 

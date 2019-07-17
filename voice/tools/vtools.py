@@ -6,7 +6,7 @@ import os
 import numpy
 from scipy.io.wavfile import read, write
 
-from librosa_tools import normalize, write_wav
+from .librosa_tools import normalize, write_wav
 
 import logging
 

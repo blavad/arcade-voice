@@ -4,16 +4,16 @@ import logging
 from google.oauth2 import service_account
 from google.cloud import texttospeech
 
-from tools import change_voice
+from .tools.vtools import change_voice
 
 class TextToSpeechClient(object):
     def __init__(self, service_accout_file=None, language='en-US', gender="Male"):
         if service_accout_file is None:
-            service_accout_file = os.path.expanduser('./credentials/Arcadeep.json')
+            service_accout_file = os.path.expanduser('~/Arcadeep-credentials.json')
 
         credentials = service_account.Credentials.from_service_account_file(service_accout_file)
         self._client = texttospeech.TextToSpeechClient(credentials=credentials)        
-        self.tmp_wav = 'assets/tmp.wav'
+        self.tmp_wav = '/tmp/tmp.wav'
         
         self.set_gender(gender)
         self.set_language(language)

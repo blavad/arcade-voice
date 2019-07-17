@@ -7,5 +7,5 @@ setup(
     name='arcade-voice',
     version='0.1.0',
     packages=find_packages(),
-    install_requires=['pyaudio','scipy','numpy','flask', 'dialogflow','google-cloud-speech','google-cloud-texttospeech','pydub'],
+    install_requires=['numpy','flask', 'dialogflow','google-cloud-speech','google-cloud-texttospeech'],
 )
