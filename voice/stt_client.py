@@ -1,4 +1,6 @@
 import os
+import re
+import sys
 import logging
 from sys import platform
 
@@ -41,6 +43,36 @@ class CloudSpeechClient:
 
         return None
 
+    def listen_get_loop(self, responses):
+        num_chars_printed = 0
+        for response in responses:
+            if not response.results:
+                continue
+
+            result = response.results[0]
+            if not result.alternatives:
+                continue
+
+            transcript = result.alternatives[0].transcript
+            overwrite_chars = ' ' * (num_chars_printed - len(transcript))
+
+            if not result.is_final:
+                sys.stdout.write(transcript + overwrite_chars + '\r')
+                sys.stdout.flush()
+
+                num_chars_printed = len(transcript)
+
+            else:
+                print(transcript + overwrite_chars)
+            
+                if re.search(r'\b(exit|quit)\b', transcript, re.I):
+                    print('Exiting..')
+                    break
+
+                num_chars_printed = 0
+                return transcript + overwrite_chars
+
+
     def recognize(self, language_code='fr-FR'):
         streaming_config = speech.types.StreamingRecognitionConfig(
             config=self._make_config(language_code),
@@ -52,9 +84,6 @@ class CloudSpeechClient:
             responses = self._client.streaming_recognize(
                 config=streaming_config, requests=requests)
 
-            for response in responses:
-                for result in response.results:
-                    if result.is_final:
-                        return result.alternatives[0].transcript
+            return listen_get_loop(responses)
 
         return None
