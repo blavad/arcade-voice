@@ -63,11 +63,10 @@ class ArcadeepVoice(Thread):
 
     def listen(self):
         text = None
-        while (text is None):
-            print("Start Record")
-            text = self.client.recognize(language_code=self.language)
-            print("Stop Record")
-            print("Heard : {}".format(text))
+        print("Start Record")
+        text = self.client.recognize(language_code=self.language)
+        print("Stop Record")
+        print("Heard : {}".format(text))
         return text
 
     
