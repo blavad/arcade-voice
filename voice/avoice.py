@@ -13,7 +13,7 @@ class ArcadeepVoice(Thread):
 
     def __init__(self, language='fr-FR', gender='Male', service_accout_file=None):
         Thread.__init__(self)
-        self.client = CloudSpeechClient(service_accout_file=service_accout_file)
+        self.client = CloudSpeechClient(self, service_accout_file=service_accout_file)
         self.client_speaker = TextToSpeechClient(language=language,gender=gender, service_accout_file=service_accout_file)
         
         self.last_sentence_heard = None
@@ -63,13 +63,13 @@ class ArcadeepVoice(Thread):
 
     def listen(self):
         text = None
-        print("Start Record")
-        text = self.client.recognize(language_code=self.language)
-        print("Stop Record")
-        print("Heard : {}".format(text))
+        while (text is None):
+            print("Start Record")
+            text = self.client.recognize(language_code=self.language)
+            print("Stop Record")
+            print("Heard : {}".format(text))
         return text
 
-    
 ''' 
 class ArcadeepVoiceButton(ArcadeepVoice):
     
